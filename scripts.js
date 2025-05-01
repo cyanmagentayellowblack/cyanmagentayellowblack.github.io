@@ -1,12 +1,10 @@
 // --- DARK/LIGHT MODE LOGIC ---
 
-// Get references to the theme toggle button and the body element
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
 /**
  * Set the theme (dark or light), update button label, and save to localStorage
- * @param {string} mode - 'dark' or 'light'
  */
 function setTheme(mode) {
     if (mode === 'dark') {
@@ -23,19 +21,54 @@ function setTheme(mode) {
  * Toggle between dark and light mode
  */
 function toggleTheme() {
-    if (body.classList.contains('dark')) {
-        setTheme('light');
-    } else {
-        setTheme('dark');
-    }
+    setTheme(body.classList.contains('dark') ? 'light' : 'dark');
 }
 
-// --- ADVANCED MIXED HOMOGLYPH PROCESSING ---
+// --- HOMOGLYPH MAPS FOR EACH METHOD ---
 
-/**
- * Map each English letter (upper & lower case) to an array of visually similar Unicode homoglyphs
- */
-const homoglyphs = {
+// Method 1: Simple - Only a few obvious replacements
+const simpleMap = {
+    a: 'α', A: 'Α',
+    e: 'е', E: 'Ε',
+    i: 'і', I: 'Ι',
+    o: 'ο', O: 'Ο',
+    c: 'с', C: 'С',
+    y: 'у', Y: 'Υ',
+    s: 'ѕ', S: 'Ѕ'
+};
+
+// Method 2: Intermediate - More substitutions, some Greek & Cyrillic
+const intermediateMap = {
+    a: 'α', A: 'Α',
+    b: 'Ь', B: 'Β',
+    c: 'с', C: 'С',
+    d: 'ԁ', D: 'Ꭰ',
+    e: 'е', E: 'Ε',
+    f: 'ғ', F: 'Ғ',
+    g: 'ɡ', G: 'Ԍ',
+    h: 'һ', H: 'Н',
+    i: 'і', I: 'Ι',
+    j: 'ј', J: 'Ј',
+    k: 'κ', K: 'Κ',
+    l: 'ӏ', L: 'Ꮮ',
+    m: 'м', M: 'Μ',
+    n: 'η', N: 'Ν',
+    o: 'ο', O: 'Ο',
+    p: 'р', P: 'Ρ',
+    q: 'զ', Q: 'Ⴓ',
+    r: 'г', R: 'Я',
+    s: 'ѕ', S: 'Ѕ',
+    t: 'τ', T: 'Τ',
+    u: 'υ', U: 'Ս',
+    v: 'ν', V: 'Ѵ',
+    w: 'ѡ', W: 'Ԝ',
+    x: 'х', X: 'Χ',
+    y: 'у', Y: 'Υ',
+    z: 'ᴢ', Z: 'Ζ'
+};
+
+// Method 3: Advanced - Full random mixed homoglyphs for each letter
+const advancedHomoglyphs = {
     A: ['Α', 'А', 'Ꭺ', 'Λ'],
     B: ['Β', 'В', 'Ƀ', 'Ᏼ'],
     C: ['С', 'Ϲ', 'Ꮯ', 'Ⅽ'],
@@ -92,37 +125,42 @@ const homoglyphs = {
 };
 
 /**
- * Randomly pick a homoglyph for a given character, or return the character unchanged if none found.
- * @param {string} char - Single character to process
- * @returns {string} - Homoglyph or original character
+ * Method 1: Simple processor - only replaces a few obvious letters
  */
-function randomHomoglyph(char) {
-    const options = homoglyphs[char];
-    if (!options) return char; // No homoglyphs for this char
-    const idx = Math.floor(Math.random() * options.length);
-    return options[idx];
+function processWordSimple(word) {
+    return word.split('').map(char => simpleMap[char] || char).join('');
 }
 
 /**
- * Main processing function: replaces each letter with a random homoglyph from the list.
- * Leaves non-alphabet characters untouched.
- * @param {string} word - Input string to process
- * @returns {string} - Processed string with mixed homoglyphs
+ * Method 2: Intermediate processor - replaces more letters with common homoglyphs
  */
-function processWordMixed(word) {
-    return word.split('').map(char => randomHomoglyph(char)).join('');
+function processWordIntermediate(word) {
+    return word.split('').map(char => intermediateMap[char] || char).join('');
 }
 
 /**
- * Unified processor for all modes (currently all modes use the mixed homoglyph approach)
- * @param {string} option - Method number as string ('1', '2', '3')
- * @param {string} word - Input string
- * @returns {string} - Processed string
+ * Method 3: Advanced processor - replaces every letter with a random homoglyph from a large set
+ */
+function processWordAdvanced(word) {
+    return word.split('').map(char => {
+        const options = advancedHomoglyphs[char];
+        if (!options) return char;
+        const idx = Math.floor(Math.random() * options.length);
+        return options[idx];
+    }).join('');
+}
+
+/**
+ * Main processing function - picks the method based on dropdown selection
  */
 function processWord(option, word) {
     if (!word) return '';
-    // All methods use the same advanced mixed homoglyph processor for max variety
-    return processWordMixed(word);
+    switch (option) {
+        case '1': return processWordSimple(word);
+        case '2': return processWordIntermediate(word);
+        case '3': return processWordAdvanced(word);
+        default: return word;
+    }
 }
 
 // --- MAIN APP LOGIC ---
