@@ -1,12 +1,8 @@
 # Robloxchatbypasser
 
-A website that i made where you can enter words and it will give you the bypassed version of
-there are 3 Methods options (1 and 2 are similar) use responsibly lol 
+This is a tool I forked and tinkered with-credit to @Shuggreal for birthing this beautiful beast.
+Type your sentences into the text bar above, and it’ll spit out the bypassed version. How it turns out depends on the processing option you choose.
 
-Update: It Took way too long to update the ui so it looks clean (Old Ui)
-![image](https://github.com/user-attachments/assets/1df1779b-e048-4842-92d2-0266ef9d0ef6)
+Use it responsibly. Or don’t. Just remember, every trick has its price.
 
-New Ui
-![image](https://github.com/user-attachments/assets/69f39b04-351d-4bad-b9f7-764c008077cc)
-
-
+(30/4/2025)
