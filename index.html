@@ -4,28 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roblox Chat Bypasser</title>
+    <!-- Link to external CSS file for styling -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Dark/Light mode toggle button -->
+    <button id="themeToggle" aria-label="Toggle dark or light mode" type="button">
+        🌙 Dark Mode
+    </button>
+    <!-- Main container for the app -->
+    <main class="container" role="main">
         <h1>Roblox Chat Bypasser</h1>
-        
-        <label for="inputWord">Enter a word or phrase:</label>
-        <input type="text" id="inputWord" placeholder="Enter your word or phrase...">
-        
-        <label for="selectOption">Processing option:</label>
-        <select id="selectOption">
-            <option value="1" selected>Method 1</option>
-            <option value="2">Method 2</option>
-            <option value="3">Method 3</option>
-        </select>
-        
-        <div id="outputContainer">
+        <!-- Form for user input and method selection -->
+        <form id="bypassForm" autocomplete="off">
+            <label for="inputWord">Enter a word or phrase:</label>
+            <input type="text" id="inputWord" placeholder="Type here..." maxlength="64" autofocus aria-label="Input word or phrase">
+
+            <label for="selectOption">Processing option:</label>
+            <select id="selectOption" aria-label="Select processing method">
+                <option value="1" selected>Method 1</option>
+                <option value="2">Method 2</option>
+                <option value="3">Method 3</option>
+            </select>
+        </form>
+        <!-- Output area for the processed word -->
+        <section id="outputContainer" aria-live="polite">
             <label for="outputWord">Processed word:</label>
             <div id="outputWord" class="output"></div>
-        </div>
-    </div>
-
+        </section>
+    </main>
+    <!-- Link to external JavaScript file for logic -->
     <script src="scripts.js"></script>
 </body>
 </html>
