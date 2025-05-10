@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Splitter with ZIP Download</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <!-- JSZip and FileSaver.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+  <h2>🧩 Image Splitter with ZIP Download</h2>
+  <form class="controls" autocomplete="off" onsubmit="return false;">
+    <label for="imageInput">Choose image:</label>
+    <input type="file" id="imageInput" accept="image/*" title="Select an image to split">
+
+    <label for="rows">Rows:</label>
+    <input type="number" id="rows" name="rows" value="3" min="1" max="20" placeholder="Rows">
+
+    <label for="cols">Columns:</label>
+    <input type="number" id="cols" name="cols" value="3" min="1" max="20" placeholder="Columns">
+
+    <button type="button" id="splitBtn">Split Image</button>
+    <button type="button" id="downloadZipBtn" disabled>Download ZIP</button>
+  </form>
+  <div id="tiles" class="tiles"></div>
+  <script src="script.js"></script>
+</body>
+</html>
