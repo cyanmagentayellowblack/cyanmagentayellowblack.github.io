@@ -1,0 +1,111 @@
+body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+.container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; }
+h1 { text-align: center; }
+textarea { width: 100%; height: 120px; font-size: 1.1em; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+button, select, input[type=number], input[type=color] {
+    margin: 6px 2px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #888;
+    font-size: 1em;
+    cursor: pointer;
+}
+.speedreader-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+    background: var(--bg, #222);
+    color: var(--color, #fff);
+    font-size: var(--fontsize, 2.5em);
+    border-radius: 8px;
+    margin-bottom: 18px;
+    text-align: var(--align, center);
+    transition: background 0.2s, color 0.2s, font-size 0.2s;
+}
+.controls button { margin: 0 8px; }
+.hidden { display: none; }
+label { margin-right: 8px; }
+.settings-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.35);
+    align-items: center;
+    justify-content: center;
+}
+.settings-modal.active { display: flex; }
+.settings-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px 32px;
+    min-width: 320px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    position: relative;
+}
+.settings-content h3 { margin-top: 0; }
+.close-settings {
+    position: absolute; top: 8px; right: 12px;
+    background: transparent; border: none; font-size: 1.5em; cursor: pointer;
+}
+.dropdown {
+    margin-top: 10px;
+}
+.dropdown-btn {
+    background: #eee;
+    border: 1px solid #aaa;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    text-align: left;
+}
+.dropdown-content {
+    display: none;
+    margin-top: 6px;
+    padding-left: 8px;
+    border-left: 2px solid #ccc;
+}
+.dropdown.open .dropdown-content { display: block; }
+.fullscreen {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    margin: 0 !important; border-radius: 0 !important;
+    z-index: 9999 !important;
+    background: var(--bg, #222) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.progress-bar-bg {
+    width: 100%; height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    background: #4caf50;
+    width: 0%;
+    transition: width 0.2s;
+}
+.progress-info {
+    text-align: right;
+    font-size: 0.95em;
+    color: #888;
+    margin-bottom: 8px;
+}
+.comment {
+    color: #888;
+    font-size: 0.95em;
+    margin-left: 8px;
+    font-style: italic;
+    opacity: 0.85;
+}
+@media (max-width: 600px) {
+    .container, .settings-content { padding: 12px 4vw; }
+}

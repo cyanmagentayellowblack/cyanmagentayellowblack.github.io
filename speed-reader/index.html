@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Open Speed Reader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" id="input-page">
+      <h1>Open Speed Reader</h1>
+      <textarea id="input-text" placeholder="Paste or type your text here..."></textarea>
+      <div style="text-align:center;">
+          <button id="start-btn">Speed Read</button>
+      </div>
+  </div>
+  <div class="container hidden" id="reader-page">
+      <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
+      <div class="progress-info" id="progress-info"></div>
+      <div class="speedreader-box" id="speedreader-box"></div>
+      <div class="controls" style="text-align:center;">
+          <button id="play-btn">Play</button>
+          <button id="pause-btn">Pause</button>
+          <button id="restart-btn">Restart</button>
+          <button id="back-btn">⏪ -10</button>
+          <button id="forward-btn">+10 ⏩</button>
+          <button id="fullscreen-btn">Fullscreen</button>
+          <button id="settings-btn">Settings</button>
+      </div>
+  </div>
+  <div class="settings-modal" id="settings-modal">
+      <div class="settings-content">
+          <button class="close-settings" id="close-settings">&times;</button>
+          <h3>Preferences</h3>
+          <div class="settings-group">
+              <label>
+                  Words per minute:
+                  <input type="number" id="wpm" min="50" max="2000" value="200">
+                  <span class="comment">Controls reading speed. 200 WPM is average for comfortable reading. Increase for faster, decrease for comprehension.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  Chunk size (words):
+                  <input type="number" id="chunk-size" min="1" max="10" value="1">
+                  <span class="comment">Number of words shown at once. 1–3 is good for most people. Larger chunks can be faster but harder to process.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  Font size:
+                  <input type="number" id="font-size" min="16" max="120" value="40"> px
+                  <span class="comment">Adjust for comfort and visibility. Larger sizes help focus.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  Font color:
+                  <input type="color" id="font-color" value="#ffffff">
+                  Background color:
+                  <input type="color" id="bg-color" value="#222222">
+                  <span class="comment">Choose colors for best contrast and least eye strain.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  Alignment:
+                  <select id="alignment">
+                      <option value="center">Center</option>
+                      <option value="left">Left</option>
+                      <option value="right">Right</option>
+                  </select>
+                  <span class="comment">Center is most common for RSVP. Left/right for personal preference.</span>
+              </label>
+          </div>
+          <div class="dropdown" id="advanced-dropdown">
+              <button class="dropdown-btn" id="advanced-btn">Advanced &#9662;</button>
+              <div class="dropdown-content" id="advanced-content">
+                  <label>
+                      <input type="checkbox" id="speed-variability">
+                      Speed variability
+                      <span class="comment">Slows for bigger chunks, speeds up for smaller. Good if you vary chunk size.</span>
+                  </label><br>
+                  <label>
+                      <input type="checkbox" id="chunk-sentence">
+                      Start new chunk at end of sentences/paragraphs
+                      <span class="comment">Keeps sentences together. Recommended for natural flow and comprehension.</span>
+                  </label><br>
+                  <label>
+                      <input type="checkbox" id="pause-sentence">
+                      Pause at end of sentences/paragraphs
+                      <span class="comment">Adds a slight pause for natural rhythm. Helpful for complex or dense texts.</span>
+                  </label><br>
+                  <label>
+                      <input type="checkbox" id="skip-stopwords">
+                      Skip stopwords
+                      <span class="comment">Removes common words like "the", "and". OFF by default. Turn on for skimming or reviewing familiar material; leave off for best comprehension.</span>
+                  </label>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
