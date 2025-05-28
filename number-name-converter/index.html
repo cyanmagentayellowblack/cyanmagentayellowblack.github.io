@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number ↔ Name Converter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Number ↔ Name Converter</h1>
+    <section>
+      <label for="number-input">Number to Name</label>
+      <input type="text" id="number-input" autocomplete="off">
+      <button id="to-name">Convert</button>
+      <div id="name-output" class="output"></div>
+    </section>
+    <div class="dropdown-toggle" id="dropdown-toggle">
+      <span id="arrow">&#9654;</span>
+    </div>
+    <div class="dropdown-content" id="dropdown-content">
+      <section>
+        <label for="name-input">Name to Number</label>
+        <input type="text" id="name-input" autocomplete="off">
+        <button id="to-number">Convert</button>
+        <div id="number-output" class="output"></div>
+      </section>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
