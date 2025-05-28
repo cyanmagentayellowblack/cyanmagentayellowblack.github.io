@@ -22,6 +22,7 @@ Below is a list of the tiny-projects, each with a brief summary and links to its
 - **[Leet Speak Translator](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/leet-speak-translator)** ([Live Demo](https://cyanmagentayellowblack.github.io/leet-speak-translator)): A translator for converting text between English and Leet Speak (1337), useful for exploring internet slang.
 - **[Roblox Chat Bypasser Tool](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/roblox-chat-bypasser-tool)** ([Live Demo](https://cyanmagentayellowblack.github.io/roblox-chat-bypasser-tool)): An educational tool to study chat filter behavior by transforming text, with a focus on responsible use.
 - **[Open Speed Reader](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/speed-reader)** ([Live Demo](https://cyanmagentayellowblack.github.io/speed-reader)): A speed reading tool using RSVP to display text at customizable speeds, enhancing reading efficiency.
+- **[Number ↔ Name Converter](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/number-name-converter)** ([Live Demo]([https://cyanmagentayellowblack.github.io/speed-reader](https://cyanmagentayellowblack.github.io/number-name-converter))
 
 ## Contributing
 
