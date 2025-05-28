@@ -19,8 +19,8 @@ const scaleNames = [
   'quinoctogintillion', 'sexoctogintillion', 'septoctogintillion', 'octooctogintillion', 'novemoctogintillion',
   'nonagintillion', 'unnonagintillion', 'duononagintillion', 'trenonagintillion', 'quattuornonagintillion',
   'quinnonagintillion', 'sexnonagintillion', 'septennonagintillion', 'octononagintillion', 'novemnonagintillion',
-  'centillion', // 10^303, but for 10^100, we use googol
-  'googol' // 10^100
+  'centillion',
+  'googol'
 ];
 
 const below20 = [
@@ -41,17 +41,18 @@ function chunkNumber(str) {
   return out;
 }
 
-function threeDigitsToWords(num) {
-  num = parseInt(num, 10);
+function threeDigitsToWords(numStr) {
+  let num = parseInt(numStr, 10);
   if (num === 0) return '';
   if (num < 20) return below20[num];
   if (num < 100) {
     return tens[Math.floor(num / 10)] + (num % 10 ? '-' + below20[num % 10] : '');
   }
+  let rem = num % 100;
   return (
     below20[Math.floor(num / 100)] +
     ' hundred' +
-    (num % 100 ? ' ' + threeDigitsToWords(num % 100) : '')
+    (rem ? ' and ' + threeDigitsToWords(('0' + rem).slice(-2)) : '')
   );
 }
 
@@ -59,7 +60,6 @@ function numberToWords(numStr) {
   if (!/^\d+$/.test(numStr)) return '';
   if (numStr === '0') return 'zero';
 
-  // Special case for googol
   if (numStr === '1' + '0'.repeat(100)) return 'one googol';
 
   let chunks = chunkNumber(numStr);
@@ -70,13 +70,14 @@ function numberToWords(numStr) {
       let chunkWords = threeDigitsToWords(chunks[i]);
       let scaleIndex = chunks.length - i - 1;
       let scale = '';
-      // For 10^100, call it 'googol'
       if (chunks.length === 34 && i === 0) scale = 'googol';
       else if (scaleIndex < scaleNames.length) scale = scaleNames[scaleIndex];
       words.push(chunkWords + (scale ? ' ' + scale : ''));
     }
   }
-  return words.join(' ').replace(/\s+/g, ' ').trim();
+  if (words.length === 1) return words[0];
+  if (words.length === 2) return words[0] + ' and ' + words[1];
+  return words.slice(0, -1).join(', ') + ', and ' + words[words.length - 1];
 }
 
 function wordsToNumber(words) {
@@ -128,7 +129,6 @@ document.getElementById('to-number').onclick = function() {
   document.getElementById('number-output').textContent = wordsToNumber(val) || "";
 };
 
-// Dropdown logic
 const dropdownToggle = document.getElementById('dropdown-toggle');
 const dropdownContent = document.getElementById('dropdown-content');
 const arrow = document.getElementById('arrow');
