@@ -17,7 +17,6 @@ This repository houses a set of lightweight, open-source web tools created by [c
 
 Below is a list of the tiny-projects, each with a brief summary and links to its GitHub directory and live demo (where applicable):
 
-- **[Ladder Front-End](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/ladder-frontend)** ([Live Demo](https://cyanmagentayellowblack.github.io/ladder-frontend)): A minimal interface for entering URLs and interacting with a web proxy service, ideal for accessing content seamlessly.
 - **[Image Splitter](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/image-splitter)** ([Live Demo](https://cyanmagentayellowblack.github.io/image-splitter)): A tool to split images into smaller tiles or sections, perfect for creating grids or processing image segments.
 - **[Leet Speak Translator](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/leet-speak-translator)** ([Live Demo](https://cyanmagentayellowblack.github.io/leet-speak-translator)): A translator for converting text between English and Leet Speak (1337), useful for exploring internet slang.
 - **[Roblox Chat Bypasser Tool](https://github.com/cyanmagentayellowblack/cyanmagentayellowblack.github.io/tree/main/roblox-chat-bypasser-tool)** ([Live Demo](https://cyanmagentayellowblack.github.io/roblox-chat-bypasser-tool)): An educational tool to study chat filter behavior by transforming text, with a focus on responsible use.
