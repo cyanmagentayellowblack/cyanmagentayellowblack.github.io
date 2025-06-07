@@ -1,7 +1,37 @@
-body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-.container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px; }
-h1 { text-align: center; }
-textarea { width: 100%; height: 120px; font-size: 1.1em; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Use Flexbox to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+.container {
+    max-width: 600px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 24px;
+    width: 100%; /* Ensure container respects max-width but fills available space */
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
+}
+
+h1 {
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    font-size: 1.1em;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
 button, select, input[type=number], input[type=color] {
     margin: 6px 2px;
     padding: 8px 16px;
@@ -10,6 +40,7 @@ button, select, input[type=number], input[type=color] {
     font-size: 1em;
     cursor: pointer;
 }
+
 .speedreader-box {
     display: flex;
     justify-content: center;
@@ -23,19 +54,37 @@ button, select, input[type=number], input[type=color] {
     text-align: var(--align, center);
     transition: background 0.2s, color 0.2s, font-size 0.2s;
 }
-.controls button { margin: 0 8px; }
-.hidden { display: none; }
-label { margin-right: 8px; }
+
+.controls button {
+    margin: 0 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+label {
+    margin-right: 8px;
+}
+
 .settings-modal {
     display: none;
     position: fixed;
     z-index: 10000;
-    left: 0; top: 0; width: 100vw; height: 100vh;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0,0,0,0.35);
-    align-items: center;
-    justify-content: center;
+    display: flex; /* Use Flexbox for centering modal content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
-.settings-modal.active { display: flex; }
+
+.settings-modal.active {
+    display: flex; /* Ensure modal is displayed as flex when active */
+}
+
 .settings-content {
     background: #fff;
     border-radius: 8px;
@@ -44,14 +93,25 @@ label { margin-right: 8px; }
     box-shadow: 0 2px 12px rgba(0,0,0,0.18);
     position: relative;
 }
-.settings-content h3 { margin-top: 0; }
-.close-settings {
-    position: absolute; top: 8px; right: 12px;
-    background: transparent; border: none; font-size: 1.5em; cursor: pointer;
+
+.settings-content h3 {
+    margin-top: 0;
 }
+
+.close-settings {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
 .dropdown {
     margin-top: 10px;
 }
+
 .dropdown-btn {
     background: #eee;
     border: 1px solid #aaa;
@@ -62,43 +122,56 @@ label { margin-right: 8px; }
     width: 100%;
     text-align: left;
 }
+
 .dropdown-content {
     display: none;
     margin-top: 6px;
     padding-left: 8px;
     border-left: 2px solid #ccc;
 }
-.dropdown.open .dropdown-content { display: block; }
+
+.dropdown.open .dropdown-content {
+    display: block;
+}
+
 .fullscreen {
     position: fixed !important;
-    top: 0 !important; left: 0 !important;
-    width: 100vw !important; height: 100vh !important;
-    margin: 0 !important; border-radius: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
     z-index: 9999 !important;
     background: var(--bg, #222) !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
 }
+
 .progress-bar-bg {
-    width: 100%; height: 8px;
+    width: 100%;
+    height: 8px;
     background: #ddd;
     border-radius: 4px;
     margin-bottom: 8px;
     overflow: hidden;
 }
+
 .progress-bar {
     height: 100%;
     background: #4caf50;
     width: 0%;
     transition: width 0.2s;
 }
+
 .progress-info {
     text-align: right;
     font-size: 0.95em;
     color: #888;
     margin-bottom: 8px;
 }
+
 .comment {
     color: #888;
     font-size: 0.95em;
@@ -106,6 +179,9 @@ label { margin-right: 8px; }
     font-style: italic;
     opacity: 0.85;
 }
+
 @media (max-width: 600px) {
-    .container, .settings-content { padding: 12px 4vw; }
+    .container, .settings-content {
+        padding: 12px 4vw;
+    }
 }
