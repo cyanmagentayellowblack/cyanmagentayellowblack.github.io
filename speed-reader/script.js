@@ -1,5 +1,5 @@
 const STOPWORDS = new Set([
-    "the","and","a","an","in","on","at","of","to","for","with","by","from","as","but","or","nor","so","yet","if","then","than","that","which","who","whom","whose","this","these","those","am","is","are","was","were","be","been","being","have","has","had","do","does","did"
+"the","and","a","an","in","on","at","of","to","for","with","by","from","as","but","or","nor","so","yet","if","then","than","that","which","who","whom","whose","this","these","those","am","is","are","was","were","be","been","being","have","has","had","do","does","did"
 ]);
 
 const inputPage = document.getElementById('input-page');
@@ -31,6 +31,9 @@ const speedVarInput = document.getElementById('speed-variability');
 const chunkSentenceInput = document.getElementById('chunk-sentence');
 const pauseSentenceInput = document.getElementById('pause-sentence');
 const skipStopwordsInput = document.getElementById('skip-stopwords');
+
+settingsModal.classList.remove('active');
+
 skipStopwordsInput.checked = false;
 
 let words = [];
