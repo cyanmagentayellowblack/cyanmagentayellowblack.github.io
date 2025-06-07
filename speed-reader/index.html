@@ -4,11 +4,40 @@
   <meta charset="UTF-8">
   <title>Open Speed Reader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f4f4f4">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container" id="input-page">
       <h1>Open Speed Reader</h1>
+      <div class="import-section">
+          <h3>Import Content</h3>
+          <div class="settings-group">
+              <label>
+                  URL:
+                  <input type="text" id="import-url" placeholder="Enter a public text URL...">
+                  <button id="import-url-btn">Import</button>
+                  <span class="comment">Paste a URL to a raw text file or public article.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  GitHub Token:
+                  <input type="text" id="github-token" placeholder="Enter GitHub Personal Access Token...">
+                  <input type="text" id="github-path" placeholder="Enter repo path (e.g., user/repo/file.txt)...">
+                  <button id="import-github-btn">Import from GitHub</button>
+                  <span class="comment">Use a GitHub token to fetch public repository files. <a href="https://github.com/settings/tokens" target="_blank">Generate a token</a>.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  Upload File:
+                  <input type="file" id="file-upload" accept=".txt,.pdf">
+                  <span class="comment">Upload a .txt or .pdf file.</span>
+              </label>
+          </div>
+      </div>
       <textarea id="input-text" placeholder="Paste or type your text here..."></textarea>
       <div style="text-align:center;">
           <button id="start-btn">Speed Read</button>
@@ -30,7 +59,7 @@
   </div>
   <div class="settings-modal" id="settings-modal">
       <div class="settings-content">
-          <button class="close-settings" id="close-settings">&times;</button>
+          <button class="close-settings" id="close-settings">×</button>
           <h3>Preferences</h3>
           <div class="settings-group">
               <label>
@@ -73,8 +102,26 @@
                   <span class="comment">Center is most common for RSVP. Left/right for personal preference.</span>
               </label>
           </div>
+          <div class="settings-group">
+              <label>
+                  Reading Mode:
+                  <select id="reading-mode">
+                      <option value="rsvp">RSVP</option>
+                      <option value="color-gradient">Color Gradient</option>
+                      <option value="focus">Focus Mode</option>
+                  </select>
+                  <span class="comment">Choose RSVP for standard, Color Gradient for guided reading, or Focus Mode for optimal recognition point.</span>
+              </label>
+          </div>
+          <div class="settings-group">
+              <label>
+                  <input type="checkbox" id="ai-adaptive">
+                  AI-Adaptive Mode
+                  <span class="comment">Adjusts speed and chunk size based on text complexity and comprehension. Pauses for questions every 50 chunks.</span>
+              </label>
+          </div>
           <div class="dropdown" id="advanced-dropdown">
-              <button class="dropdown-btn" id="advanced-btn">Advanced &#9662;</button>
+              <button class="dropdown-btn" id="advanced-btn">Advanced ▾</button>
               <div class="dropdown-content" id="advanced-content">
                   <label>
                       <input type="checkbox" id="speed-variability">
@@ -100,6 +147,25 @@
           </div>
       </div>
   </div>
+  <div class="comprehension-modal" id="comprehension-modal">
+      <div class="comprehension-content">
+          <button class="close-comprehension" id="close-comprehension">×</button>
+          <h3>Comprehension Check</h3>
+          <p id="comprehension-question"></p>
+          <input type="text" id="comprehension-answer" placeholder="Type your answer...">
+          <button id="submit-answer">Submit</button>
+      </div>
+  </div>
+  <div class="consent-modal" id="consent-modal">
+      <div class="consent-content">
+          <button class="close-consent" id="close-consent">×</button>
+          <h3>Token Usage Consent</h3>
+          <p>This app uses your GitHub Personal Access Token to fetch content from public repositories. The token is stored temporarily in your browser's session (cleared when you close the browser) and is not sent to any third parties. By proceeding, you consent to this usage. See our <a href="PRIVACY.md" target="_blank">Privacy Policy</a> for details.</p>
+          <button id="accept-consent">Accept</button>
+          <button id="decline-consent">Decline</button>
+      </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
