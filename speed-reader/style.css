@@ -19,7 +19,7 @@ body {
     box-sizing: border-box;
 }
 
-h1 {
+h1, h3 {
     text-align: center;
 }
 
@@ -32,13 +32,17 @@ textarea {
     border: 1px solid #ccc;
 }
 
-button, select, input[type=number], input[type=color] {
+button, select, input[type=number], input[type=color], input[type=text], input[type=file] {
     margin: 6px 2px;
     padding: 8px 16px;
     border-radius: 4px;
     border: 1px solid #888;
     font-size: 1em;
     cursor: pointer;
+}
+
+.import-section {
+    margin-bottom: 16px;
 }
 
 .speedreader-box {
@@ -55,6 +59,25 @@ button, select, input[type=number], input[type=color] {
     transition: background 0.2s, color 0.2s, font-size 0.2s;
 }
 
+.speedreader-box.color-gradient {
+    background: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+.speedreader-box.focus-mode span {
+    position: relative;
+}
+
+.speedreader-box.focus-mode span::before {
+    content: attr(data-orp);
+    color: #ff4444;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .controls button {
     margin: 0 8px;
 }
@@ -67,7 +90,7 @@ label {
     margin-right: 8px;
 }
 
-.settings-modal {
+.settings-modal, .comprehension-modal, .consent-modal {
     display: none;
     position: fixed;
     z-index: 10000;
@@ -80,11 +103,11 @@ label {
     align-items: center;
 }
 
-.settings-modal.active {
+.settings-modal.active, .comprehension-modal.active, .consent-modal.active {
     display: flex;
 }
 
-.settings-content {
+.settings-content, .comprehension-content, .consent-content {
     background: #fff;
     border-radius: 8px;
     padding: 24px 32px;
@@ -93,11 +116,11 @@ label {
     position: relative;
 }
 
-.settings-content h3 {
+.settings-content h3, .comprehension-content h3, .consent-content h3 {
     margin-top: 0;
 }
 
-.close-settings {
+.close-settings, .close-comprehension, .close-consent {
     position: absolute;
     top: 8px;
     right: 12px;
@@ -106,6 +129,8 @@ label {
     font-size: 1.5em;
     cursor: pointer;
     z-index: 10001;
+    color: #333;
+    padding: 5px;
 }
 
 .dropdown {
@@ -181,7 +206,7 @@ label {
 }
 
 @media (max-width: 600px) {
-    .container, .settings-content {
+    .container, .settings-content, .comprehension-content, .consent-content {
         padding: 12px 4vw;
     }
 }
