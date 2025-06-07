@@ -3,10 +3,10 @@ body {
     background: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex; /* Use Flexbox to center content */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
@@ -15,8 +15,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     padding: 24px;
-    width: 100%; /* Ensure container respects max-width but fills available space */
-    box-sizing: border-box; /* Ensure padding doesn’t affect width */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 h1 {
@@ -76,13 +76,12 @@ label {
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.35);
-    display: flex; /* Use Flexbox for centering modal content */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    justify-content: center;
+    align-items: center;
 }
 
 .settings-modal.active {
-    display: flex; /* Ensure modal is displayed as flex when active */
+    display: flex;
 }
 
 .settings-content {
@@ -106,6 +105,7 @@ label {
     border: none;
     font-size: 1.5em;
     cursor: pointer;
+    z-index: 10001;
 }
 
 .dropdown {
