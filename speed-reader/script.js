@@ -1,5 +1,5 @@
 const STOPWORDS = new Set([
-"the","and","a","an","in","on","at","of","to","for","with","by","from","as","but","or","nor","so","yet","if","then","than","that","which","who","whom","whose","this","these","those","am","is","are","was","were","be","been","being","have","has","had","do","does","did"
+    "the","and","a","an","in","on","at","of","to","for","with","by","from","as","but","or","nor","so","yet","if","then","than","that","which","who","whom","whose","this","these","those","am","is","are","was","were","be","been","being","have","has","had","do","does","did"
 ]);
 
 const inputPage = document.getElementById('input-page');
@@ -31,16 +31,53 @@ const speedVarInput = document.getElementById('speed-variability');
 const chunkSentenceInput = document.getElementById('chunk-sentence');
 const pauseSentenceInput = document.getElementById('pause-sentence');
 const skipStopwordsInput = document.getElementById('skip-stopwords');
-
-settingsModal.classList.remove('active');
-
-skipStopwordsInput.checked = false;
+const aiAdaptiveInput = document.getElementById('ai-adaptive');
+const comprehensionModal = document.getElementById('comprehension-modal');
+const comprehensionQuestion = document.getElementById('comprehension-question');
+const comprehensionAnswer = document.getElementById('comprehension-answer');
+const submitAnswer = document.getElementById('submit-answer');
+const closeComprehension = document.getElementById('close-comprehension');
+const readingModeInput = document.getElementById('reading-mode');
+const importUrlBtn = document.getElementById('import-url-btn');
+const importGithubBtn = document.getElementById('import-github-btn');
+const githubTokenInput = document.getElementById('github-token');
+const githubPathInput = document.getElementById('github-path');
+const fileUploadInput = document.getElementById('file-upload');
+const consentModal = document.getElementById('consent-modal');
+const acceptConsentBtn = document.getElementById('accept-consent');
+const declineConsentBtn = document.getElementById('decline-consent');
+const closeConsent = document.getElementById('close-consent');
 
 let words = [];
 let chunks = [];
+let sentences = [];
 let currentIndex = 0;
 let timer = null;
 let playing = false;
+let comprehensionStats = JSON.parse(localStorage.getItem('comprehensionStats')) || { correct: 0, total: 0 };
+let githubConsentGiven = false;
+
+// Ensure settings modal is hidden and input page is visible on page load
+settingsModal.classList.remove('active');
+comprehensionModal.classList.remove('active');
+consentModal.classList.remove('active');
+inputPage.classList.remove('hidden');
+readerPage.classList.add('hidden');
+
+skipStopwordsInput.checked = false;
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(() => {
+        console.log('Service Worker Registered');
+    });
+}
+
+function analyzeTextComplexity(text) {
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim());
+    const avgSentenceLength = sentences.reduce((sum, s) => sum + s.split(' ').length, 0) / sentences.length || 0;
+    const avgWordLength = text.split(' ').reduce((sum, w) => sum + w.length, 0) / text.split(' ').length || 0;
+    return { avgSentenceLength, avgWordLength };
+}
 
 function splitTextToChunks(text, chunkSize, options = {}) {
     let rawWords = text.replace(/\s+/g, ' ').trim().split(' ');
@@ -49,20 +86,27 @@ function splitTextToChunks(text, chunkSize, options = {}) {
     }
     let result = [];
     let chunk = [];
+    let sentenceChunks = [];
+    let currentSentence = [];
     for (let i = 0; i < rawWords.length; i++) {
         chunk.push(rawWords[i]);
+        currentSentence.push(rawWords[i]);
         let endOfSentence = /[.!?]$/.test(rawWords[i]);
-        let endOfParagraph = /\n$/.test(rawWords[i]);
         if (
             chunk.length >= chunkSize ||
-            (options.chunkSentence && (endOfSentence || endOfParagraph))
+            (options.chunkSentence && endOfSentence)
         ) {
             result.push(chunk.join(' '));
+            sentenceChunks.push(currentSentence.join(' '));
             chunk = [];
+            if (endOfSentence) currentSentence = [];
         }
     }
-    if (chunk.length > 0) result.push(chunk.join(' '));
-    return result;
+    if (chunk.length > 0) {
+        result.push(chunk.join(' '));
+        sentenceChunks.push(currentSentence.join(' '));
+    }
+    return { chunks: result, sentences: sentenceChunks };
 }
 
 function getPauseDuration(chunk, wpm, options = {}) {
@@ -79,6 +123,20 @@ function getPauseDuration(chunk, wpm, options = {}) {
     if (options.pauseSentence && /\n$/.test(chunk)) {
         base *= 2.2;
     }
+    if (aiAdaptiveInput.checked) {
+        const { avgSentenceLength, avgWordLength } = analyzeTextComplexity(chunks.join(' '));
+        if (avgSentenceLength > 15 || avgWordLength > 6) base *= 1.3;
+        if (comprehensionStats.total > 0 && comprehensionStats.correct / comprehensionStats.total < 0.7) {
+            base *= 1.2;
+            chunkSizeInput.value = Math.max(1, parseInt(chunkSizeInput.value) - 1);
+            const chunkData = splitTextToChunks(inputText.value.trim(), parseInt(chunkSizeInput.value), {
+                chunkSentence: chunkSentenceInput.checked,
+                skipStopwords: skipStopwordsInput.checked
+            });
+            chunks = chunkData.chunks;
+            sentences = chunkData.sentences;
+        }
+    }
     return base;
 }
 
@@ -87,12 +145,94 @@ function updateBoxStyle() {
     speedreaderBox.style.setProperty('--color', fontColorInput.value);
     speedreaderBox.style.setProperty('--bg', bgColorInput.value);
     speedreaderBox.style.setProperty('--align', alignmentInput.value);
+    speedreaderBox.classList.remove('color-gradient', 'focus-mode');
+    if (readingModeInput.value === 'color-gradient') {
+        speedreaderBox.classList.add('color-gradient');
+    } else if (readingModeInput.value === 'focus') {
+        speedreaderBox.classList.add('focus-mode');
+    }
 }
 
 function showChunk(idx) {
-    speedreaderBox.textContent = chunks[idx] || '';
+    const chunk = chunks[idx] || '';
+    if (readingModeInput.value === 'focus') {
+        const words = chunk.split(' ');
+        const highlighted = words.map(word => {
+            const orpIndex = Math.floor(word.length / 3);
+            return `<span data-orp="${word[orpIndex] || ''}">${word}</span>`;
+        }).join(' ');
+        speedreaderBox.innerHTML = highlighted;
+    } else {
+        speedreaderBox.textContent = chunk;
+    }
     currentIndex = idx;
     updateProgress();
+}
+
+function showComprehensionQuestion() {
+    pause();
+    const sentenceIndex = Math.min(sentences.length - 1, Math.floor(currentIndex / 50));
+    const sentence = sentences[sentenceIndex] || 'What is the main idea?';
+    comprehensionQuestion.textContent = `What is the main idea of: "${sentence}"?`;
+    comprehensionModal.classList.add('active');
+}
+
+function importText(text) {
+    inputText.value = text;
+    sessionStorage.removeItem('githubToken');
+    githubTokenInput.value = '';
+}
+
+async function importFromUrl(url) {
+    try {
+        const response = await fetch(url, { mode: 'cors' });
+        if (!response.ok) throw new Error('Failed to fetch URL');
+        const text = await response.text();
+        importText(text);
+    } catch (error) {
+        alert('Error importing URL: ' + error.message);
+        console.error(error);
+    }
+}
+
+async function importFromGithub(token, path) {
+    if (!githubConsentGiven) {
+        consentModal.classList.add('active');
+        return;
+    }
+    try {
+        const [owner, repo, ...filePath] = path.split('/');
+        const file = filePath.join('/');
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${file}`, {
+            headers: { Authorization: `token ${token}` }
+        });
+        if (!response.ok) throw new Error('Failed to fetch GitHub content');
+        const data = await response.json();
+        const text = atob(data.content);
+        importText(text);
+    } catch (error) {
+        alert('Error importing from GitHub: ' + error.message);
+        console.error(error);
+    }
+}
+
+async function importFromFile(file) {
+    if (file.type === 'text/plain') {
+        const reader = new FileReader();
+        reader.onload = (e) => importText(e.target.result);
+        reader.readAsText(file);
+    } else if (file.type === 'application/pdf') {
+        const pdf = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise;
+        let text = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(' ') + '\n';
+        }
+        importText(text);
+    } else {
+        alert('Unsupported file type. Use .txt or .pdf.');
+    }
 }
 
 function play() {
@@ -116,6 +256,10 @@ function step() {
         return;
     }
     showChunk(currentIndex);
+    if (aiAdaptiveInput.checked && currentIndex % 50 === 0 && currentIndex > 0) {
+        showComprehensionQuestion();
+        return;
+    }
     let duration = getPauseDuration(
         chunks[currentIndex],
         parseInt(wpmInput.value),
@@ -206,13 +350,61 @@ startBtn.onclick = () => {
         chunkSentence: chunkSentenceInput.checked,
         skipStopwords: skipStopwordsInput.checked
     };
-    chunks = splitTextToChunks(text, chunkSize, options);
+    const chunkData = splitTextToChunks(text, chunkSize, options);
+    chunks = chunkData.chunks;
+    sentences = chunkData.sentences;
     currentIndex = 0;
     inputPage.classList.add('hidden');
     readerPage.classList.remove('hidden');
     updateBoxStyle();
     showChunk(0);
     pause();
+};
+
+importUrlBtn.onclick = () => {
+    const url = importUrl.value.trim();
+    if (url) importFromUrl(url);
+    else alert('Please enter a valid URL.');
+};
+
+importGithubBtn.onclick = () => {
+    const token = githubTokenInput.value.trim();
+    const path = githubPathInput.value.trim();
+    if (token && path) {
+        sessionStorage.setItem('githubToken', token);
+        githubConsentGiven = false;
+        consentModal.classList.add('active');
+    } else {
+        alert('Please enter both a GitHub token and repository path.');
+    }
+};
+
+acceptConsentBtn.onclick = () => {
+    githubConsentGiven = true;
+    consentModal.classList.remove('active');
+    importFromGithub(sessionStorage.getItem('githubToken'), githubPathInput.value.trim());
+};
+
+declineConsentBtn.onclick = () => {
+    githubConsentGiven = false;
+    sessionStorage.removeItem('githubToken');
+    githubTokenInput.value = '';
+    consentModal.classList.remove('active');
+};
+
+closeConsent.onclick = () => {
+    declineConsentBtn.click();
+};
+
+consentModal.onclick = (e) => {
+    if (e.target === consentModal) {
+        closeConsent.click();
+    }
+};
+
+fileUploadInput.onchange = () => {
+    const file = fileUploadInput.files[0];
+    if (file) importFromFile(file);
 };
 
 playBtn.onclick = play;
@@ -228,6 +420,7 @@ fullscreenBtn.onclick = () => {
         exitFullscreen();
     }
 };
+
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
         speedreaderBox.classList.remove('fullscreen');
@@ -235,22 +428,56 @@ document.addEventListener('fullscreenchange', () => {
 });
 
 settingsBtn.onclick = () => {
+    console.log('Settings button clicked');
     settingsModal.classList.add('active');
 };
+
 closeSettings.onclick = () => {
+    console.log('Close settings button clicked');
     settingsModal.classList.remove('active');
 };
+
 settingsModal.onclick = (e) => {
-    if (e.target === settingsModal) settingsModal.classList.remove('active');
+    if (e.target === settingsModal) {
+        console.log('Modal background clicked');
+        settingsModal.classList.remove('active');
+    }
+};
+
+submitAnswer.onclick = () => {
+    console.log('Submit answer clicked');
+    const answer = comprehensionAnswer.value.trim();
+    comprehensionStats.total++;
+    if (answer) comprehensionStats.correct++;
+    localStorage.setItem('comprehensionStats', JSON.stringify(comprehensionStats));
+    comprehensionModal.classList.remove('active');
+    comprehensionAnswer.value = '';
+    play();
+};
+
+closeComprehension.onclick = () => {
+    console.log('Close comprehension clicked');
+    comprehensionStats.total++;
+    localStorage.setItem('comprehensionStats', JSON.stringify(comprehensionStats));
+    comprehensionModal.classList.remove('active');
+    comprehensionAnswer.value = '';
+    play();
+};
+
+comprehensionModal.onclick = (e) => {
+    if (e.target === comprehensionModal) {
+        console.log('Comprehension modal background clicked');
+        closeComprehension.click();
+    }
 };
 
 advancedBtn.onclick = () => {
     advancedDropdown.classList.toggle('open');
-    advancedBtn.innerHTML = advancedDropdown.classList.contains('open') ? 'Advanced &#9652;' : 'Advanced &#9662;';
+    advancedBtn.innerHTML = advancedDropdown.classList.contains('open') ? 'Advanced ▴' : 'Advanced ▾';
 };
 
 [wpmInput, chunkSizeInput, fontSizeInput, fontColorInput, bgColorInput, alignmentInput,
- speedVarInput, chunkSentenceInput, pauseSentenceInput, skipStopwordsInput]
+ speedVarInput, chunkSentenceInput, pauseSentenceInput, skipStopwordsInput, aiAdaptiveInput, readingModeInput]
 .forEach(el => el.oninput = () => {
     updateBoxStyle();
     pause();
