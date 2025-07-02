@@ -1,0 +1,44 @@
+<h1>Universal Base64 File Encoder/Decoder</h1>
+
+  <!-- ENCODER SECTION -->
+  <div class="section" id="encodeSection">
+    <h2>Encode File to Raw Base64</h2>
+    <label for="fileInput">Choose file(s):</label>
+    <input type="file" id="fileInput" multiple>
+    <button id="copyBtn" disabled>Copy Base64</button>
+    <label for="output">Raw Base64 Output:</label>
+    <textarea id="output" readonly></textarea>
+    <button id="downloadBtn" class="spaced-above" disabled>Download Base64 as .txt</button>
+    <div>
+      <span id="encodeInfo" class="info"></span>
+      <span id="encodeSizeToggle" class="dropdown-details hidden">Show bytes/bits</span>
+      <div id="encodeSizeDetails" class="info hidden"></div>
+    </div>
+    <div id="encodeError" class="error hidden"></div>
+  </div>
+
+  <!-- DECODER SECTION -->
+  <div class="section" id="decodeSection">
+    <h2>Decode Raw Base64 to File</h2>
+    <label for="base64FileInput">Choose file(s):</label>
+    <input type="file" id="base64FileInput" accept=".txt,.b64" multiple>
+    <button id="pasteBase64Btn" type="button">Paste Base64</button>
+    <label for="base64Input">Paste raw Base64 string:</label>
+    <textarea id="base64Input" placeholder="Paste raw Base64 here..."></textarea>
+    <div class="spaced-above">
+      <button id="decodeBtn">Decode</button>
+      <button id="showMediaBtn" style="display:none;">Show Media</button>
+      <button id="downloadDecodedBtn" style="display:none;">Download Decoded File</button>
+    </div>
+    <div>
+      <span id="decodeInfo" class="info"></span>
+      <span id="decodeSizeToggle" class="dropdown-details hidden">Show bytes/bits</span>
+      <div id="decodeSizeDetails" class="info hidden"></div>
+    </div>
+    <div id="decodeError" class="error hidden"></div>
+    <div id="imageDimensions" class="image-dimensions"></div>
+    <img id="mediaPreview" alt="Decoded Image Preview">
+    <audio id="audioPreview" controls></audio>
+    <video id="videoPreview" controls></video>
+    <iframe id="pdfPreview"></iframe>
+  </div>
